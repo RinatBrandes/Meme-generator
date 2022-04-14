@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Meme Generator</title>
+</head>
+<body onload="onInit()">
+    <h1>Meme Generator</h1>
+
+    <div class="grid-container">
+        <div class="images grid">
+           
+        </div>
+    </div>
+
+
+    <div class="editor-container">
+        <div class="canvas-container">
+            <canvas id="canvas" width="400" height="450" class="canvas" onclick="drawShape(event)"> 
+             <p class="first-line"></p>          
+        </div>
+
+        <div class="editor-elements">
+            <label class="msg"></label>
+            <input type="text" class="text" placeholder="Enter some text" onkeyup="onUpdateLine(event)">
+            <div class="line1">
+                <div class="btn-up-down">
+                    <button class="btn-up" type="button" value="up" onclick="onSetDirection(value)">up</button>
+                    <button class="btn-down" type="button" value="down" onclick="onSetDirection(value)">down</button>
+                </div>
+                <button class="switch-line" type="button" onclick="onSwitchLine()">switch line</button>
+                <button class="add-line" type="button" onclick="onSetNewLine()">add line</button>
+                <button class="delete-line" type="button" onclick="onDeleteLine()">delete line</button>
+            </div>
+
+            <div class="line2" >
+                <div class="line21">
+                    <button class="increase-font" type="button" onclick="onIncFont()">inc</button>
+                    <button class="decrease-font" type="button" onclick="onDecFont()">dec</button>
+                    <button class="left-text" type="button" value="left" onclick="onSetAlign(value)">left t</button>
+                    <button class="center-text" type="button" value="center" onclick="onSetAlign(value)">center t</button>
+                    <button class="right-text" type="button" value="right" onclick="onSetAlign(value)">right t</button>
+                </div>
+
+                <div class="line22">
+                    <select class="fonts" onclick="selectFont(this.value)">                                        
+                        <option value="impact">Impact</option>
+                        <option value="david">David</option>
+                        <option value="Ariel">Ariel</option>
+                    </select>
+                    <input type="color" class="font-color color" value="#FFFFFF" onchange="setFontColor()">
+                    <input type="color" class="stroke-color color" value="#000000">                    
+                </div>
+            </div>
+
+            <div class="line3">
+                <p>imoje</p>
+            </div>
+
+            <div class="line4">
+                <button class="share" type="button">share</button>
+                <button class="download" type="button">download</button>
+            </div>
+            <!-- onchange="setText(this.value)"" -->
+        </div>
+    </div>
+    
+    <script src="js/main.services.js"></script>
+    <script src="js/main.controller.js"></script>
+</body>
+</html>
