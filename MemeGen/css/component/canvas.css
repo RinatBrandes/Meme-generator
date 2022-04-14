@@ -54,7 +54,8 @@
 }
 
 .msg {
-    display: none;
+    /* display: none; */
     font-size: 22px;
     color: red;
+    height: 30px;
 }
