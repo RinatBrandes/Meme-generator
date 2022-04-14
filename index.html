@@ -46,13 +46,13 @@
                 </div>
 
                 <div class="line22">
-                    <select class="fonts" onclick="selectFont(this.value)">                                        
+                    <select class="fonts" onclick="onSelectFont(this.value)">                                        
                         <option value="impact">Impact</option>
                         <option value="david">David</option>
                         <option value="Ariel">Ariel</option>
                     </select>
-                    <input type="color" class="font-color color" value="#FFFFFF" onchange="setFontColor()">
-                    <input type="color" class="stroke-color color" value="#000000">                    
+                    <input type="color" class="fill-color color" value="#FFFFFF" onchange="setFontColor('fill-color')">
+                    <input type="color" class="stroke-color color" value="#000000" onchange="setFontColor('stroke-color')">                    
                 </div>
             </div>
 
@@ -62,9 +62,12 @@
 
             <div class="line4">
                 <button class="share" type="button">share</button>
-                <button class="download" type="button">download</button>
-            </div>
-            <!-- onchange="setText(this.value)"" -->
+                <!-- <button class="download" type="button" onclick="onDownloadImg(this)">download -->
+                <!-- <button class="download" type="button"> -->
+                    <a href="#" onclick="onDownloadImg(this)" class="download" download="" >Download</a>
+                <!-- </button> -->
+                
+            </div>            
         </div>
     </div>
     

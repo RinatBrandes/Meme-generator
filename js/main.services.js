@@ -64,7 +64,7 @@ function createLine(){
             size: 22,
             align: 'center',
             strokeColor: '#000000',
-            fiilColor: '#FFFFFF',
+            fillColor: '#FFFFFF',
             x: calcX(), 
             y: calcY()
         }
@@ -88,12 +88,6 @@ function calcY(){
 
 function addLine(){
 
-    // var temp = gMeme.lines.find(line => {
-    //     line.txt = 'deleted'
-    // })
-
-    // if(gMeme.lines.length > 3 &&){
-
     if(gMeme.lines.length > 3){
         console.log('gMeme', gMeme)
         if((gMeme.lines[gMeme.lines.length-1].y + 75) >= gMeme.lines[1].y){
@@ -110,8 +104,9 @@ function addLine(){
 
 
 function saveLineTxt(userTxt){
+    
     var selectedLineIdx = gMeme.selectedLineIdx
-    console.log('gmeme', gMeme)
+    
     var elText = Math.round(gCtx.measureText(gMeme.lines[selectedLineIdx].txt).width)
     if(elText + 50 > gElCanvas.width){
         setMsg('You can\'t write any more')
@@ -127,69 +122,36 @@ function setMemeFontSize(diff){
     var elText = gCtx.measureText(gMeme.lines[selectedLineIdx].txt) 
    
     var txtHeight = elText.actualBoundingBoxAscent + elText.actualBoundingBoxDescent
-   console.log('gMeme.lines[selectedLineIdx].y - txtHeight < 10', gMeme.lines[selectedLineIdx].y - txtHeight < 10)
-   console.log('elText.width + 40 > gElCanvas.width', elText.width + 40 > gElCanvas.width)
-    if(selectedLineIdx === 0){
-        // var calcY =  gMeme.lines[selectedLineIdx].y - txtHeight
-        // console.log( '= user y',gMeme.lines[selectedLineIdx].y, '- text he', txtHeight)
-
-        if(gMeme.lines[selectedLineIdx].align === 'center' && 
-             gMeme.lines[selectedLineIdx].y - txtHeight < 10  || elText.width + 20 > gElCanvas.width){     
-                setMsg('You cant increase the size any more')
-        } else if((gMeme.lines[selectedLineIdx].align === 'left')  &&
-            (gMeme.lines[selectedLineIdx].y - txtHeight < 10)  || (elText.width + 40 > gElCanvas.width)){            
-                setMsg('You cant increase the size any more')
-        } else {
-
+   if(diff === -2 && gMeme.lines[selectedLineIdx].size === 10){
+        setMsg('You can\'t decrease any more')
+        return
+   }
+        
+    if((gMeme.lines[selectedLineIdx].y > gElCanvas.height) || 
+        (gMeme.lines[selectedLineIdx].y - txtHeight - 10 < 0) ||
+        (elText.width + 40 > gElCanvas.width)){     
+            setMsg('You can\'t increase the size any more')
+    } else {
             gMeme.lines[selectedLineIdx].size += diff
-        }
-
-    } else if(selectedLineIdx === 1){
-        // var calcY =  gMeme.lines[selectedLineIdx].y + txtHeight
-        console.log( '= user y',gMeme.lines[selectedLineIdx].y, '- text he', txtHeight)
-        if(gMeme.lines[selectedLineIdx].align === 'center' &&  elText.width + 40 > gElCanvas.width ){
-            setMsg('You cant increase the size any more')
-        } else if (gMeme.lines[selectedLineIdx].align === 'left'  && elText.width + 50 > gElCanvas.width ){
-            setMsg('You cant increase the size any more')
-        } else {
-            gMeme.lines[selectedLineIdx].size += diff
-        }
-
-    } else if(selectedLineIdx === 2 ){
-            if (gMeme.lines[selectedLineIdx].align === 'center' && (elText.width + 40 > gElCanvas.width)){
-                setMsg('You cant increase the size any more')
-            } else if(gMeme.lines[selectedLineIdx].align === 'left' && elText.width + 50 > gElCanvas.width){
-                setMsg('You cant increase the size any more')
-            } else {
-                gMeme.lines[selectedLineIdx].size += diff
-            }
-
-    } else if(selectedLineIdx > 2){
-            if (gMeme.lines[selectedLineIdx].align === 'center' && (elText.width + 40 > gElCanvas.width ||
-                (gMeme.lines[selectedLineIdx].y -txtHeight -10 < gMeme.lines[selectedLineIdx-1].y)) ){
-                setMsg('You cant increase the size any more')
-            } else if(gMeme.lines[selectedLineIdx].align === 'left' && elText.width + 50 > gElCanvas.width || 
-                (gMeme.lines[selectedLineIdx].y - txtHeight -10 < gMeme.lines[selectedLineIdx-1].y)){
-                setMsg('You cant increase the size any more')
-            } else {
-                gMeme.lines[selectedLineIdx].size += diff
-            }
-        }
-        //  else {
-        //     gMeme.lines[selectedLineIdx].size += diff
-        // }   
-    
+    }
+     
    
     console.log('gmeme', gMeme)
 }    
 
-function  setMemeColor(color){
+function  setMemeColor(value){
 
     console.log('gmeme', gMeme)
     
     var selectedLine = gMeme.selectedLineIdx
     console.log('selectedLine',selectedLine )
-    gMeme.lines[selectedLine].color = color
+    if(value === 'fill-color' ) {
+        var color = document.querySelector('.fill-color').value
+        gMeme.lines[selectedLine].fillColor = color
+    } else if(value === 'stroke-color' ) {
+        var color = document.querySelector('.stroke-color').value
+        gMeme.lines[selectedLine].strokeColor = color
+    }    
     console.log('gmeme', gMeme)
 }
 
@@ -197,15 +159,12 @@ function setMemeAlign(value){
     
     var selectedLineIdx = gMeme.selectedLineIdx
     gMeme.lines[selectedLineIdx].align = value
-    
-    // var elText = gCtx.measureText(gMeme.lines[selectedLineIdx].txt) 
-    // elText = Math.round(elText.width)  
-    // console.log('elText',elText )
+       
     if(value === 'left'){
         gMeme.lines[selectedLineIdx].x = gElCanvas.width - (gElCanvas.width - 10)
     } else if (value === 'right'){                
         
-        gMeme.lines[selectedLineIdx].x = gElCanvas.width -20
+        gMeme.lines[selectedLineIdx].x = gElCanvas.width -10
     } else {
         
         gMeme.lines[selectedLineIdx].x = (gElCanvas.width  / 2) 
@@ -215,6 +174,7 @@ function setMemeAlign(value){
 
 
 function handelSelectedLine(){
+
     var selectedLineIdx = gMeme.selectedLineIdx
     gCtx.font = gMeme.lines[selectedLineIdx].size+ 'px impact'
     var textWidth = gCtx.measureText(gMeme.lines[selectedLineIdx].txt).width
@@ -224,27 +184,18 @@ function handelSelectedLine(){
         width:0,
         height:0
     }
-
-    if(gMeme.lines[selectedLineIdx].txt === ''){
-        border = {
-            x:0,
-            y:0,
-            width:0,
-            height:0
-        }
-        return border
-    }
+    
     var elText = gCtx.measureText(gMeme.lines[selectedLineIdx].txt)    
     var txtHeight = elText.fontBoundingBoxAscent + elText.fontBoundingBoxDescent;
-    
+   
     if(gMeme.lines[selectedLineIdx].align === 'center'){
         border.x = ((gElCanvas.width - textWidth) -30) / 2       
     } else if(gMeme.lines[selectedLineIdx].align === 'left'){
         border.x = gMeme.lines[selectedLineIdx].x -10
     } else {
-        border.x = gElCanvas.width - textWidth - 30
+        border.x = gElCanvas.width - textWidth - 20
     }
-    border.width = textWidth + 20
+    border.width = textWidth + 30
 
     border.y = gMeme.lines[selectedLineIdx].y - txtHeight + 5
     border.height = txtHeight +10
@@ -259,7 +210,6 @@ function  switchLine(){
     } else if(gMeme.selectedLineIdx+1 < gMeme.lines.length){
         gMeme.selectedLineIdx++ 
     }
-    
 }
 
 function clearMsg(){
@@ -268,22 +218,24 @@ function clearMsg(){
 }
 
 function setMsg(msg){
+
     var elMsg = document.querySelector('.msg')            
     elMsg.innerText = msg
-    setTimeout(clearMsg, 5000);
-
+    setTimeout(clearMsg, 3000);
 }
 
 
 function  setDirection(value){
-
+    var selectedLineIdx = gMeme.selectedLineIdx
+    var elText = gCtx.measureText(gMeme.lines[selectedLineIdx].txt)    
+    var txtHeight = elText.fontBoundingBoxAscent + elText.fontBoundingBoxDescent;
     if (value === 'up') {
-        if(gMeme.lines[gMeme.selectedLineIdx].y -10 > 10 ){
+        if(gMeme.lines[gMeme.selectedLineIdx].y - txtHeight  > 10 ){
             gMeme.lines[gMeme.selectedLineIdx].y -= 10          
         } else {
             setMsg('You can\'t move up')        
         }    
-    } else if (value === 'down' && gMeme.lines[gMeme.selectedLineIdx].y + 10 < gElCanvas.height ){
+    } else if (value === 'down' && gMeme.lines[gMeme.selectedLineIdx].y + txtHeight < gElCanvas.height ){
         gMeme.lines[gMeme.selectedLineIdx].y += 10        
     } else {
         setMsg('You can\'t move down')
@@ -292,20 +244,30 @@ function  setDirection(value){
 }
 
 function deleteLine(){
-    //i'm not really deleting only clear the object
+    
     var selectedLineIdx = gMeme.selectedLineIdx
-    // gMeme.lines.splice(selectedLineIdx,1)
-    // console.log('', gMeme)
-    gMeme.lines[selectedLineIdx].txt = ''
-    gMeme.lines[selectedLineIdx].size = 22
-    gMeme.lines[selectedLineIdx].align = 'center'
-    gMeme.lines[selectedLineIdx].strokeColor = '#000000'
-    gMeme.lines[selectedLineIdx].fiilColor = '#FFFFFF'
-    console.log('',gMeme )
+    if(selectedLineIdx === gMeme.lines.length-1) {
+        gMeme.lines.splice(selectedLineIdx,1)
+    } else {
+        for(var i = gMeme.lines.length-1;i > selectedLineIdx ;i--){
+            gMeme.lines[i].y = gMeme.lines[i-1].y
+        }
+        gMeme.lines.splice(selectedLineIdx,1)
+    }    
+   
     if(gMeme.lines.length === 0 || selectedLineIdx === 0){
         gMeme.selectedLineIdx = 0
     } else {
         gMeme.selectedLineIdx = gMeme.selectedLineIdx-1
     }
     console.log('',gMeme )
+}
+
+
+function downloadImg(){
+
+    const data = gElCanvas.toDataURL()
+    var elDownload = document.querySelector('.download')
+    elDownload.href = data
+    elDownload.download = 'MemeImg.jpg'    
 }
