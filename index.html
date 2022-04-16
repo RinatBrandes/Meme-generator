@@ -1,77 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>Meme Generator</title>
-</head>
-<body onload="onInit()">
-    <h1>Meme Generator</h1>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="css/style.css">
+        <title>Meme Generator</title>
+    </head>
 
-    <div class="grid-container">
-        <div class="images grid">
-           
-        </div>
-    </div>
-
-
-    <div class="editor-container">
-        <div class="canvas-container">
-            <canvas id="canvas" width="400" height="450" class="canvas" onclick="drawShape(event)"> 
-             <p class="first-line"></p>          
-        </div>
-
-        <div class="editor-elements">
-            <label class="msg"></label>
-            <input type="text" class="text" placeholder="Enter some text" onkeyup="onUpdateLine(event)">
-            <div class="line1">
-                <div class="btn-up-down">
-                    <button class="btn-up" type="button" value="up" onclick="onSetDirection(value)">up</button>
-                    <button class="btn-down" type="button" value="down" onclick="onSetDirection(value)">down</button>
+    <body onload="onInit()">
+        
+        <!-- The first Page - the gallery -->
+        <div class="gallery">
+            <header class="header">
+                <img src="/images/logo.svg" class="img-logo">
+                <div class="action-row">
+                    <img src="/images/subtract.svg" class="header-subtract">
+                    <input class="search" type="text" placeholder="Search here..." onkeyup="onSearch(event)">
                 </div>
-                <button class="switch-line" type="button" onclick="onSwitchLine()">switch line</button>
-                <button class="add-line" type="button" onclick="onSetNewLine()">add line</button>
-                <button class="delete-line" type="button" onclick="onDeleteLine()">delete line</button>
-            </div>
+            </header>
 
-            <div class="line2" >
-                <div class="line21">
-                    <button class="increase-font" type="button" onclick="onIncFont()">inc</button>
-                    <button class="decrease-font" type="button" onclick="onDecFont()">dec</button>
-                    <button class="left-text" type="button" value="left" onclick="onSetAlign(value)">left t</button>
-                    <button class="center-text" type="button" value="center" onclick="onSetAlign(value)">center t</button>
-                    <button class="right-text" type="button" value="right" onclick="onSetAlign(value)">right t</button>
-                </div>
-
-                <div class="line22">
-                    <select class="fonts" onclick="onSelectFont(this.value)">                                        
-                        <option value="impact">Impact</option>
-                        <option value="david">David</option>
-                        <option value="Ariel">Ariel</option>
-                    </select>
-                    <input type="color" class="fill-color color" value="#FFFFFF" onchange="setFontColor('fill-color')">
-                    <input type="color" class="stroke-color color" value="#000000" onchange="setFontColor('stroke-color')">                    
+            <div class="gallery-container">
+                <div class="grid-container">
+                    <!-- מילות מפתח -->
+                    <div class="images grid">        
+                    </div>
                 </div>
             </div>
+            <footer class="footer">
+                <p>Brandes Rinat 2022</p>         
+            </footer>
+        </div>    
 
-            <div class="line3">
-                <p>imoje</p>
-            </div>
-
-            <div class="line4">
-                <button class="share" type="button">share</button>
-                <!-- <button class="download" type="button" onclick="onDownloadImg(this)">download -->
-                <!-- <button class="download" type="button"> -->
-                    <a href="#" onclick="onDownloadImg(this)" class="download" download="" >Download</a>
-                <!-- </button> -->
+        <!-- the canvas editor -->
+        <div class="html-container">            
+            <div class="editor-container">
+                <div class="frame">
+                    <div class="canvas-container">
+                        <canvas id="canvas" width="500" height="500" class="canvas"> 
+                    </div>
+                    <img src="/images/logo.svg" class="logo">
+                </div>    
+            
+                <!-- <div class="back-to-gallery"></div> -->
+            
+                <div class="editor-elements">
+                    <label class="msg"></label>
+                    <div class="line" >
+                        <select class="fonts" onclick="onSelectFont(this.value)">                                        
+                            <option value="impact">Impact</option>
+                            <option value="david">David</option>
+                            <option value="Ariel">Ariel</option>
+                        </select>
+                        <div class="color-picker">
+                            <p>Fill</p>
+                            <input type="color" class="fill-color color" value="#ffe4c4" onchange="setFontColor('fill-color')">
+                        </div>
+                        <div class="color-picker">
+                            <p>Stroke</p>
+                            <input type="color" class="stroke-color color" value="#000000" onchange="setFontColor('stroke-color')">                    
+                        </div>
+                    </div>
+                    <input type="text" class="text" placeholder="Enter some text" onkeyup="onUpdateLine(event)">
+                    <div class="line">
+                        <img src="/images/up.svg" class="btn-up" onclick="onSetDirection('up')">
+                        <img src="/images/down.svg" class="btn-down" onclick="onSetDirection('down')">
+                        <img src="/images/switch-line.svg" class="switch-line" onclick="onSwitchLine()">
+                        <img src="/images/new-line.svg" class="add-line" onclick="onSetNewLine()">
+                        <img src="/images/delete-line.svg" class="delete-line" onclick="onDeleteLine()">
+                    </div>
+                    <div class="line">
+                        <img src="/images/increase.svg" class="increase-font" onclick="onIncFont()">
+                        <img src="/images/decrease.svg" class="decrease-font" onclick="onDecFont()">
+                        <img src="/images/left.svg" class="left-text" onclick="onSetAlign('left')">
+                        <img src="/images/center.svg" class="center-text" onclick="onSetAlign('center')">
+                        <img src="/images/right.svg" class="right-text" onclick="onSetAlign('right')">
+                    </div>
                 
-            </div>            
+                    
+                
+                    <div class="emojis">
+                        <p class="em1" onclick="onAddEmoji('.em1')">😀</p>
+                        <p class="em2" onclick="onAddEmoji('.em2')">😆</p>
+                        <p class="em3" onclick="onAddEmoji('.em3')">😂</p>
+                        <p class="em4" onclick="onAddEmoji('.em4')">😇</p>
+                        <p class="em5" onclick="onAddEmoji('.em5')">😍</p>
+                        <p class="em6" onclick="onAddEmoji('.em6')">🥳</p>
+                        <p class="em7" onclick="onAddEmoji('.em7')">😤</p>
+                        <p class="em8" onclick="onAddEmoji('.em8')">😢</p>
+                        <p class="em9" onclick="onAddEmoji('.em9')">🤡</p>
+                        <p class="em10" onclick="onAddEmoji('.em10')">👍 </p>
+                        <p class="em11" onclick="onAddEmoji('.em11')">🙏</p>
+                    </div>
+                
+                
+                    <div class="line">
+                        <img src="/images/share.svg" class="share" onclick="uploadImg()">
+                        <img src="/images/download.svg" class="download" onclick="onDownloadImg()">
+                    </div>    
+
+                    <p class="user-msg"></p>
+                    <p class="share"></p>
+                
+                    <button type="button" class="home" onclick="onBackHome()">Back to gallery</button>
+                </div>
+            </div>
+            
+        
+            
         </div>
-    </div>
-    
-    <script src="js/main.services.js"></script>
-    <script src="js/main.controller.js"></script>
-</body>
+
+
+        <script src="js/util.js"></script>
+        <script src="js/upload-service.js"></script>
+        <script src="js/main.services.js"></script>
+        <script src="js/shape.services.js"></script>
+        <script src="js/main.controller.js"></script>
+    </body>
 </html>
